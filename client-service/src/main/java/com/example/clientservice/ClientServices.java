@@ -11,11 +11,14 @@ import java.util.List;
 @Service
 public class ClientServices {
 
+
     @Autowired
     private ClientRepository clientRepository;
 
     @Autowired
     RestTemplate restTemplate;
+
+
 
     public ResponseEntity<?> createClient(Client client){
         try{
@@ -29,7 +32,7 @@ public class ClientServices {
 
     public ResponseEntity<?> fetchClients(){
         List<Client> clients = clientRepository.findAll();
-        if(clients.size() > 0){
+        if(!clients.isEmpty()){
             return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
         }else {
             return new ResponseEntity<>("No clients",HttpStatus.NOT_FOUND);
