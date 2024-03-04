@@ -1,6 +1,7 @@
-package com.example.clientservice;
+package com.example.clientservice.dto;
 
 
+import com.example.clientservice.dto.Cinema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

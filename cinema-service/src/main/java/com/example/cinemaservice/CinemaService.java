@@ -17,5 +17,9 @@ public class CinemaService {
         return cinemaRepository.findAll();
     }
 
+    public Cinema fetchCinemaById(int id){
+        return cinemaRepository.findById(id).orElse(null);
+    }
+
 
 }

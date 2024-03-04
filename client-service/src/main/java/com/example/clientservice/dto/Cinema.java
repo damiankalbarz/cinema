@@ -1,4 +1,4 @@
-package com.example.clientservice;
+package com.example.clientservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Cinema {
-    private Long id;
+    private int id;
     private String cinemaName;
     private String location;
 }

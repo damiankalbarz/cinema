@@ -14,8 +14,8 @@ public class ClientServiceApplication {
 	}
 
 
-	@Bean
 	@LoadBalanced
+	@Bean
 	public RestTemplate restTemplate(){
 		return new RestTemplate();
 	}

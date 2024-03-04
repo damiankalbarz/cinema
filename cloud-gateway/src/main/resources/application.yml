@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8080
 
 spring:
   application:
@@ -10,7 +10,7 @@ spring:
         - id: CLIENT-SERVICE
           uri: lb://CLIENT-SERVICE
           predicates:
-            - Path=/client/**
+            - Path=/**
         - id: CINEMA-SERVICE
           uri: lb://CINEMA-SERVICE
           predicates:

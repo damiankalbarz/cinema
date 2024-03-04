@@ -21,4 +21,11 @@ public class CinemaController {
     public List<Cinema> fatchCinemas(){
         return cinemaService.fetchCinema();
     }
+
+    @GetMapping("/{id}")
+    public Cinema fetchSchoolById(@PathVariable int id){
+        return cinemaService.fetchCinemaById(id);
+    }
+
+
 }

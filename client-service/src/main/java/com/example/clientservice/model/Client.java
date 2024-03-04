@@ -1,4 +1,4 @@
-package com.example.clientservice;
+package com.example.clientservice.model;
 
 
 

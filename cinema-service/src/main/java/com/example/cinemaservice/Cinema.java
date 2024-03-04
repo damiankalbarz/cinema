@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Cinema {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
     private String cinemaName;
     private String location;
     }
