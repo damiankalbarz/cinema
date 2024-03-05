@@ -24,7 +24,7 @@ public class ClientController {
         return clientService.createClient(client);
     }
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<?> fetchClients(){
         return clientService.fetchClients();
     }
