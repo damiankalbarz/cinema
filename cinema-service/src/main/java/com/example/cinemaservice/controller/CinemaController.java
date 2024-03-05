@@ -1,5 +1,8 @@
-package com.example.cinemaservice;
+package com.example.cinemaservice.controller;
 
+import com.example.cinemaservice.model.Cinema;
+import com.example.cinemaservice.model.Room;
+import com.example.cinemaservice.service.CinemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +21,7 @@ public class CinemaController {
     }
 
     @GetMapping
-    public List<Cinema> fatchCinemas(){
+    public List<Cinema> fetchCinemas(){
         return cinemaService.fetchCinema();
     }
 
@@ -26,6 +29,13 @@ public class CinemaController {
     public Cinema fetchSchoolById(@PathVariable int id){
         return cinemaService.fetchCinemaById(id);
     }
+
+    @PostMapping("/addRoom/{cinemaId}")
+    public Cinema addRoomToCinema(@PathVariable int cinemaId, @RequestBody Room room)
+    {
+        return cinemaService.addRoomToCinema(cinemaId,room);
+    }
+
 
 
 }
