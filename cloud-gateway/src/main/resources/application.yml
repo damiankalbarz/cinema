@@ -15,6 +15,14 @@ spring:
           uri: lb://CINEMA-SERVICE
           predicates:
             - Path=/cinema/**
+        - id: FILM-SERVICE
+          uri: lb://FILM-SERVICE
+          predicates:
+            - Path=/film/**
+        - id: FILMSHOW-SERVICE
+          uri: lb://FILMSHOW-SERVICE
+          predicates:
+            - Path=/filmShow/**
 
 
 eureka:

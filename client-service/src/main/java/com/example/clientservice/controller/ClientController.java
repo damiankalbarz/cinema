@@ -15,7 +15,7 @@ public class ClientController {
     private ClientServices clientService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> fetchStudentById(@PathVariable String id){
+    public ResponseEntity<?> fetchClientById(@PathVariable String id){
         return clientService.fetchClientById(id);
     }
 
