@@ -28,5 +28,10 @@ public class FilmShowController {
         return filmShowService.fetchFilmShow();
     }
 
+    @GetMapping("/detail")
+    public ResponseEntity<?> getAllFilmShow(){
+        return filmShowService.getAllFilmShows();
+    }
+
 
 }

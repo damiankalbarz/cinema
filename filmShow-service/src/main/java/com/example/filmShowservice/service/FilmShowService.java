@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FilmShowService {
@@ -63,5 +64,31 @@ public class FilmShowService {
 
         }
 
+    }
+
+    public ResponseEntity<?> getAllFilmShows() {
+        List<FilmShow> filmShows = filmShowRepositry.findAll();
+
+        if (!filmShows.isEmpty()) {
+            List<FilmShowResponse> filmShowResponses = filmShows.stream()
+                    .map(this::mapToFilmShowResponse)
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(filmShowResponses, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("No film shows found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private FilmShowResponse mapToFilmShowResponse(FilmShow filmShow) {
+        Cinema cinema = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/" + filmShow.getCinemaId(), Cinema.class);
+        Film film = restTemplate.getForObject("http://FILM-SERVICE/film/" + filmShow.getFilmId(), Film.class);
+
+        return new FilmShowResponse(
+                filmShow.getId(),
+                filmShow.getDateTime(),
+                cinema,
+                film
+        );
     }
 }
