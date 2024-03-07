@@ -33,5 +33,10 @@ public class FilmShowController {
         return filmShowService.getAllFilmShows();
     }
 
+    @PostMapping("/{filmShowId}/reserve")
+    public ResponseEntity<?> reserveSeats(@PathVariable int filmShowId, @RequestParam int numberOfSeatsToReserve) {
+        return filmShowService.reserveSeats(filmShowId, numberOfSeatsToReserve);
+    }
+
 
 }

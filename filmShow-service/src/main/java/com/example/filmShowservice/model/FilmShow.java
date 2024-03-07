@@ -24,6 +24,6 @@ public class FilmShow {
     private Integer cinemaId;
     private String filmId;
     private Integer roomId;
-
+    private Integer availableSeats;
 
 }

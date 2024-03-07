@@ -28,6 +28,13 @@ public class FilmShowService {
 
     public ResponseEntity<?> create(FilmShow filmShow){
         try{
+            Room room = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/room/"+filmShow.getRoomId(), Room.class);
+            if (room != null) {
+                filmShow.setAvailableSeats(room.getSeats());
+            }
+            else {
+                return new ResponseEntity<>("Room not found.", HttpStatus.NOT_FOUND);
+            }
             return new ResponseEntity<FilmShow>(filmShowRepositry.save(filmShow), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,7 +53,8 @@ public class FilmShowService {
                     filmShow.get().getDateTime(),
                     cinema,
                     film,
-                    room
+                    room,
+                    filmShow.get().getAvailableSeats()
             );
 
             return new ResponseEntity<>(filmShowResponse,HttpStatus.OK);
@@ -86,14 +94,36 @@ public class FilmShowService {
     private FilmShowResponse mapToFilmShowResponse(FilmShow filmShow) {
         Cinema cinema = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/" + filmShow.getCinemaId(), Cinema.class);
         Film film = restTemplate.getForObject("http://FILM-SERVICE/film/" + filmShow.getFilmId(), Film.class);
-        Room room = restTemplate.getForObject("http://FILM-SERVICE/film/room/"+filmShow.getRoomId(), Room.class);
+        Room room = restTemplate.getForObject("http://CINEMA-SERVICE/film/room/"+filmShow.getRoomId(), Room.class);
 
         return new FilmShowResponse(
                 filmShow.getId(),
                 filmShow.getDateTime(),
                 cinema,
                 film,
-                room
+                room,
+                filmShow.getAvailableSeats()
         );
     }
+
+    public ResponseEntity<?> reserveSeats(int filmShowId, int numberOfSeatsToReserve) {
+        Optional<FilmShow> optionalFilmShow = filmShowRepositry.findById(filmShowId);
+
+        if (optionalFilmShow.isPresent()) {
+            FilmShow filmShow = optionalFilmShow.get();
+            int availableSeats = filmShow.getAvailableSeats();
+
+            if (numberOfSeatsToReserve <= availableSeats) {
+                filmShow.setAvailableSeats(availableSeats - numberOfSeatsToReserve);
+                filmShowRepositry.save(filmShow);
+
+                return new ResponseEntity<>("Seats reserved successfully.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Not enough available seats.", HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>("Film show not found.", HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

@@ -24,8 +24,6 @@ spring:
           uri: lb://FILMSHOW-SERVICE
           predicates:
             - Path=/filmShow/**
-
-
 eureka:
   client:
     register-with-eureka: true

@@ -15,4 +15,5 @@ public class FilmShowResponse {
     private Cinema cinema;
     private Film film;
     private Room room;
+    private Integer availableSeats;
 }
