@@ -19,6 +19,7 @@ public class Room {
     private String name;
     private int seats;
 
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cinema_id")

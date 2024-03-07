@@ -3,6 +3,7 @@ package com.example.filmShowservice.service;
 import com.example.filmShowservice.dto.Cinema;
 import com.example.filmShowservice.dto.Film;
 import com.example.filmShowservice.dto.FilmShowResponse;
+import com.example.filmShowservice.dto.Room;
 import com.example.filmShowservice.model.FilmShow;
 import com.example.filmShowservice.repository.FilmShowRepositry;
 import jakarta.servlet.http.PushBuilder;
@@ -39,11 +40,13 @@ public class FilmShowService {
         if(filmShow.isPresent()){
             Cinema cinema = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/" + filmShow.get().getCinemaId(), Cinema.class);
             Film film = restTemplate.getForObject("http://FILM-SERVICE/film/"+filmShow.get().getFilmId(), Film.class);
+            Room room = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/room/"+filmShow.get().getRoomId(), Room.class);
             FilmShowResponse filmShowResponse = new FilmShowResponse(
                     filmShow.get().getId(),
                     filmShow.get().getDateTime(),
                     cinema,
-                    film
+                    film,
+                    room
             );
 
             return new ResponseEntity<>(filmShowResponse,HttpStatus.OK);
@@ -83,12 +86,14 @@ public class FilmShowService {
     private FilmShowResponse mapToFilmShowResponse(FilmShow filmShow) {
         Cinema cinema = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/" + filmShow.getCinemaId(), Cinema.class);
         Film film = restTemplate.getForObject("http://FILM-SERVICE/film/" + filmShow.getFilmId(), Film.class);
+        Room room = restTemplate.getForObject("http://FILM-SERVICE/film/room/"+filmShow.getRoomId(), Room.class);
 
         return new FilmShowResponse(
                 filmShow.getId(),
                 filmShow.getDateTime(),
                 cinema,
-                film
+                film,
+                room
         );
     }
 }

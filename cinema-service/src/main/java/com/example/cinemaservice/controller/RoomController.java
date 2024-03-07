@@ -15,6 +15,11 @@ public class RoomController {
     @Autowired
     RoomService roomService;
 
-    @GetMapping("/all")
+    @GetMapping()
     public List<Room> fetchRooms(){return roomService.fetchRoom();}
+
+    @GetMapping("/{id}")
+    public Room fetchRoomById(@PathVariable int id){
+        return roomService.fetchRoomById(id);
+    }
 }

@@ -23,6 +23,7 @@ public class FilmShow {
     private LocalDateTime dateTime;
     private Integer cinemaId;
     private String filmId;
+    private Integer roomId;
 
 
 }

@@ -18,7 +18,9 @@ public class RoomService {
 
     public List<Room> fetchRoom() { return roomRepository.findAll();}
 
-    public Room fetchCinemaById(int id){return  roomRepository.findById(id).orElse(null);}
+    public Room fetchRoomById(int id){return  roomRepository.findById(id).orElse(null);}
+
+
 
 
 }

@@ -1,18 +1,15 @@
 package com.example.filmShowservice.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilmShowResponse {
+@Data
+public class Room {
     private int id;
-    private LocalDateTime dateTime;
-    private Cinema cinema;
-    private Film film;
-    private Room room;
+    private String name;
+    private int seats;
 }
