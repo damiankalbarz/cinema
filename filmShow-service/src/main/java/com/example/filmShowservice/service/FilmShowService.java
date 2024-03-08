@@ -94,7 +94,7 @@ public class FilmShowService {
     private FilmShowResponse mapToFilmShowResponse(FilmShow filmShow) {
         Cinema cinema = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/" + filmShow.getCinemaId(), Cinema.class);
         Film film = restTemplate.getForObject("http://FILM-SERVICE/film/" + filmShow.getFilmId(), Film.class);
-        Room room = restTemplate.getForObject("http://CINEMA-SERVICE/film/room/"+filmShow.getRoomId(), Room.class);
+        Room room = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/room/"+filmShow.getRoomId(), Room.class);
 
         return new FilmShowResponse(
                 filmShow.getId(),
