@@ -2,6 +2,7 @@ package com.example.filmShowservice.controller;
 
 import com.example.filmShowservice.model.FilmShow;
 import com.example.filmShowservice.service.FilmShowService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class FilmShowController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createFilmShow(@RequestBody FilmShow filmShow){
+    public ResponseEntity<?> createFilmShow(@Valid @RequestBody FilmShow filmShow){
         return filmShowService.create(filmShow);
     }
 
@@ -34,7 +35,7 @@ public class FilmShowController {
     }
 
     @PostMapping("/{filmShowId}/reserve")
-    public ResponseEntity<?> reserveSeats(@PathVariable int filmShowId, @RequestParam int numberOfSeatsToReserve) {
+    public ResponseEntity<?> reserveSeats(@Valid @PathVariable int filmShowId,@Valid @RequestParam int numberOfSeatsToReserve) {
         return filmShowService.reserveSeats(filmShowId, numberOfSeatsToReserve);
     }
 

@@ -2,6 +2,7 @@ package com.example.clientservice.controller;
 
 import com.example.clientservice.model.Client;
 import com.example.clientservice.service.ClientServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createClient(@RequestBody Client client){
+    public ResponseEntity<?> createClient(@Valid @RequestBody Client client){
         return clientService.createClient(client);
     }
 

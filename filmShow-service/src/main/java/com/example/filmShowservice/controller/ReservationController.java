@@ -2,6 +2,7 @@ package com.example.filmShowservice.controller;
 
 
 import com.example.filmShowservice.service.ReservationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class ReservationController {
     private ReservationService reservationService;
 
     @PostMapping("/reserve/{filmShowId}/{clientId}")
-    public ResponseEntity<?> reserveSeats(@PathVariable int filmShowId,@PathVariable String clientId, @RequestParam int numberOfSeatsToReserve) {
+    public ResponseEntity<?> reserveSeats(@PathVariable int filmShowId, @Valid @PathVariable String clientId,@Valid @RequestParam int numberOfSeatsToReserve) {
         return reservationService.reserveSeats(filmShowId, numberOfSeatsToReserve,clientId);
     }
 
