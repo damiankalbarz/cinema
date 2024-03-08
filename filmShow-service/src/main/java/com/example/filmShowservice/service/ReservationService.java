@@ -1,5 +1,7 @@
 package com.example.filmShowservice.service;
 
+import com.example.filmShowservice.dto.Client;
+import com.example.filmShowservice.dto.ReservationResponse;
 import com.example.filmShowservice.model.FilmShow;
 import com.example.filmShowservice.model.Reservation;
 import com.example.filmShowservice.repository.FilmShowRepositry;
@@ -23,7 +25,7 @@ public class ReservationService {
     @Autowired
     private FilmShowRepositry filmShowRepositry;
 
-    public ResponseEntity<?> reserveSeats(int filmShowId, int numberOfSeatsToReserve) {
+    public ResponseEntity<?> reserveSeats(int filmShowId, int numberOfSeatsToReserve, String clientId) {
         Optional<FilmShow> optionalFilmShow = filmShowRepositry.findById(filmShowId);
 
         if (optionalFilmShow.isPresent()) {
@@ -39,6 +41,7 @@ public class ReservationService {
                 Reservation reservation = new Reservation();
                 reservation.setFilmShow(filmShow);
                 reservation.setNumberOfSeats(numberOfSeatsToReserve);
+                reservation.setClientId(clientId);
                 reservationRepository.save(reservation);
 
                 return new ResponseEntity<>("Seats reserved successfully.", HttpStatus.OK);
@@ -82,6 +85,26 @@ public class ReservationService {
             reservationRepository.deleteById(reservationId);
 
             return new ResponseEntity<>("Reservation canceled successfully.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Reservation not found.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<?> getReservationById(int reservationId) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
+
+        if (optionalReservation.isPresent()) {
+            Client client = restTemplate.getForObject("http://CLIENT-SERVICE/client/" + optionalReservation.get().getClientId(), Client.class);
+
+            ReservationResponse reservationResponse = new ReservationResponse(
+                    optionalReservation.get().getId(),
+                    optionalReservation.get().getFilmShow(),
+                    optionalReservation.get().getNumberOfSeats(),
+                    client
+            );
+
+
+            return new ResponseEntity<>(reservationResponse, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Reservation not found.", HttpStatus.NOT_FOUND);
         }

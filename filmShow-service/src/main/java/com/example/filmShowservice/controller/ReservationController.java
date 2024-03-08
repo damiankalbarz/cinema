@@ -14,9 +14,9 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-    @PostMapping("/reserve/{filmShowId}")
-    public ResponseEntity<?> reserveSeats(@PathVariable int filmShowId, @RequestParam int numberOfSeatsToReserve) {
-        return reservationService.reserveSeats(filmShowId, numberOfSeatsToReserve);
+    @PostMapping("/reserve/{filmShowId}/{clientId}")
+    public ResponseEntity<?> reserveSeats(@PathVariable int filmShowId,@PathVariable String clientId, @RequestParam int numberOfSeatsToReserve) {
+        return reservationService.reserveSeats(filmShowId, numberOfSeatsToReserve,clientId);
     }
 
     @GetMapping("/{filmShowId}/reservations")
@@ -24,10 +24,16 @@ public class ReservationController {
         return reservationService.getReservationsForFilmShow(filmShowId);
     }
 
+    @GetMapping("/reservations/{reservationId}")
+    public ResponseEntity<?> getReservationById(@PathVariable int reservationId) {
+        return reservationService.getReservationById(reservationId);
+    }
+
     @DeleteMapping("/reservations/{reservationId}")
     public ResponseEntity<?> cancelReservation(@PathVariable int reservationId) {
         return reservationService.cancelReservation(reservationId);
     }
+
 
 
 }

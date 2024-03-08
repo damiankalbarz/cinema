@@ -19,6 +19,6 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "film_show_id")
     private FilmShow filmShow;
-    //public int clientId;
     public int numberOfSeats;
+    public String clientId;
 }
