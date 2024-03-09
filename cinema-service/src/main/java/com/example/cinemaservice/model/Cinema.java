@@ -2,6 +2,7 @@ package com.example.cinemaservice.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,10 @@ public class Cinema {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "cinema_id")
     private int id;
+    @NotBlank(message = "Nazwa kina nie może być pusta")
     private String cinemaName;
+
+    @NotBlank(message = "Lokalizacja kina nie może być pusta")
     private String location;
 
 

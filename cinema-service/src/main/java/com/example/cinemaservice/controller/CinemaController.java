@@ -3,6 +3,7 @@ package com.example.cinemaservice.controller;
 import com.example.cinemaservice.model.Cinema;
 import com.example.cinemaservice.model.Room;
 import com.example.cinemaservice.service.CinemaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class CinemaController {
     private CinemaService cinemaService;
 
     @PostMapping
-    public Cinema addCinema(@RequestBody Cinema cinema){
+    public Cinema addCinema(@Valid @RequestBody Cinema cinema){
         return cinemaService.addCinema(cinema);
     }
 
@@ -31,7 +32,7 @@ public class CinemaController {
     }
 
     @PostMapping("/addRoom/{cinemaId}")
-    public Cinema addRoomToCinema(@PathVariable int cinemaId, @RequestBody Room room)
+    public Cinema addRoomToCinema(@PathVariable int cinemaId,@Valid @RequestBody Room room)
     {
         return cinemaService.addRoomToCinema(cinemaId,room);
     }
