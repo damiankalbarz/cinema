@@ -11,19 +11,34 @@ spring:
           uri:  lb://CLIENT-SERVICE
           predicates:
             - Path=/client/**
+          filters:
+            - AuthenticationFilter
+
         - id: CINEMA-SERVICE
           uri: lb://CINEMA-SERVICE
           predicates:
             - Path=/cinema/**
+          filters:
+            - AuthenticationFilter
 
         - id: FILM-SERVICE
           uri: lb://FILM-SERVICE
           predicates:
             - Path=/film/**
+          filters:
+            - AuthenticationFilter
+
         - id: FILMSHOW-SERVICE
           uri: lb://FILMSHOW-SERVICE
           predicates:
             - Path=/filmShow/**
+          filters:
+            - AuthenticationFilter
+
+        - id: IDENTITY-SERVICE
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/auth/**
 eureka:
   client:
     register-with-eureka: true
