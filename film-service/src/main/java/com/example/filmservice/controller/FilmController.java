@@ -24,6 +24,13 @@ public class FilmController {
         return new ResponseEntity<>(films, HttpStatus.OK);
     }
 
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Film>> getFilmsByCategory(@PathVariable String category) {
+        List<Film> films = filmService.getByCategory(category);
+        return new ResponseEntity<>(films, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Film> getFilmById(@PathVariable String id) {
         Optional<Film> film = filmService.getFilmById(id);
@@ -31,13 +38,13 @@ public class FilmController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping("/auth")
     public ResponseEntity<Film> saveFilm(@Valid @RequestBody Film film) {
         Film savedFilm = filmService.saveFilm(film);
         return new ResponseEntity<>(savedFilm, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/auth/{id}")
     public ResponseEntity<Void> deleteFilm(@PathVariable String id) {
         filmService.deleteFilm(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

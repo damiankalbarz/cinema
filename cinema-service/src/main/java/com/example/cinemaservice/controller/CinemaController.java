@@ -27,11 +27,11 @@ public class CinemaController {
     }
 
     @GetMapping("/{id}")
-    public Cinema fetchSchoolById(@PathVariable int id){
+    public Cinema fetchCinemaById(@PathVariable int id){
         return cinemaService.fetchCinemaById(id);
     }
 
-    @PostMapping("/addRoom/{cinemaId}")
+    @PostMapping()
     public Cinema addRoomToCinema(@PathVariable int cinemaId,@Valid @RequestBody Room room)
     {
         return cinemaService.addRoomToCinema(cinemaId,room);

@@ -25,6 +25,10 @@ public class FilmService {
         return filmRepository.findById(id);
     }
 
+    public List<Film> getByCategory(String category) {
+        return filmRepository.findByCategory(category);
+    }
+
     public Film saveFilm(Film film) {
         return filmRepository.save(film);
     }
