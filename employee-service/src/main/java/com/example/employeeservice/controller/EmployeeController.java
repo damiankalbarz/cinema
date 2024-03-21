@@ -1,13 +1,14 @@
 package com.example.employeeservice.controller;
 
 import com.example.employeeservice.model.Employee;
+import com.example.employeeservice.model.VacationRequest;
 import com.example.employeeservice.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -43,5 +44,15 @@ public class EmployeeController {
     public ResponseEntity<Void> deleteEmployee(@PathVariable("id") int id) {
         employeeService.deleteEmployeeById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/vacation")
+    public ResponseEntity<String> takeVacation(@Valid @RequestBody VacationRequest request) {
+        boolean success = employeeService.takeVacation(request);
+        if (success) {
+            return new ResponseEntity<>("Urlop został przyjęty.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Nie udało się przyjąć urlopu.", HttpStatus.BAD_REQUEST);
+        }
     }
 }

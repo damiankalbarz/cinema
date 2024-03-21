@@ -39,6 +39,11 @@ spring:
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/auth/**
+
+        - id: EMPLOYEE-SERVICE
+          uri: lb://EMPLOYEE-SERVICE
+          predicates:
+            - Path=/employees/**
 eureka:
   client:
     register-with-eureka: true

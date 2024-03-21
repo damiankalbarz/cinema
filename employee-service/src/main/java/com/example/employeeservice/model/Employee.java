@@ -1,5 +1,6 @@
 package com.example.employeeservice.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -29,4 +30,6 @@ public class Employee {
     @Min(value = 0, message = "Liczba dni urlopu nie może być ujemna")
     @Max(value = 30, message = "Liczba dni urlopu nie może przekroczyć 30")
     private int holidaysDays;
+
+    private int availableVacationDays;
 }
