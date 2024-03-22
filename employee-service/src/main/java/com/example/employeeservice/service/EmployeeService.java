@@ -3,7 +3,9 @@ package com.example.employeeservice.service;
 import com.example.employeeservice.model.Employee;
 import com.example.employeeservice.model.VacationRequest;
 import com.example.employeeservice.repository.EmployeeRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,6 +19,14 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @Value("${rabbitmq.exchange}")
+    private String exchange;
+
+    @Value("${rabbitmq.routingKey}")
+    private String routingKey;
+
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
@@ -26,6 +36,7 @@ public class EmployeeService {
     }
 
     public Employee saveEmployee(Employee employee) {
+        rabbitTemplate.convertAndSend(exchange, routingKey, employee);
         return employeeRepository.save(employee);
     }
 
