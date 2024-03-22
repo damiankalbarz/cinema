@@ -1,6 +1,8 @@
 package com.example.employeeservice.config;
 
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -13,11 +15,17 @@ import java.util.Map;
 @EnableRabbit
 public class RabbitMqConfiguration {
 
+    @Bean
+    public Jackson2JsonMessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
     private final AmqpAdmin rabbitAdmin;
 
     public RabbitMqConfiguration(AmqpAdmin rabbitAdmin) {
         this.rabbitAdmin = rabbitAdmin;
     }
+
+
 
     public void declareQueue() {
         String name = "my-queue";

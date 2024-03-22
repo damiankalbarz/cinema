@@ -31,7 +31,7 @@ public class CinemaController {
         return cinemaService.fetchCinemaById(id);
     }
 
-    @PostMapping()
+    @PostMapping("/room")
     public Cinema addRoomToCinema(@PathVariable int cinemaId,@Valid @RequestBody Room room)
     {
         return cinemaService.addRoomToCinema(cinemaId,room);

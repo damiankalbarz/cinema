@@ -4,6 +4,7 @@ import com.example.employeeservice.model.Employee;
 import com.example.employeeservice.model.VacationRequest;
 import com.example.employeeservice.repository.EmployeeRepository;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class EmployeeService {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private Jackson2JsonMessageConverter jsonMessageConverter;
     @Value("${rabbitmq.exchange}")
     private String exchange;
 
@@ -36,6 +40,7 @@ public class EmployeeService {
     }
 
     public Employee saveEmployee(Employee employee) {
+        rabbitTemplate.setMessageConverter(jsonMessageConverter);
         rabbitTemplate.convertAndSend(exchange, routingKey, employee);
         return employeeRepository.save(employee);
     }
