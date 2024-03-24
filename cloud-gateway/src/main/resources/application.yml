@@ -18,8 +18,7 @@ spring:
           uri: lb://CINEMA-SERVICE
           predicates:
             - Path=/cinema/**
-          filters:
-            - AuthenticationFilter
+
 
         - id: FILM-SERVICE
           uri: lb://FILM-SERVICE

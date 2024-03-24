@@ -11,6 +11,9 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull(message = "cinemaId jest wymagane")
+    private int cinemaId;
+
     @NotBlank(message = "Imię jest wymagane")
     private String name;
 

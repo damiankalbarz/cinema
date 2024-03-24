@@ -1,14 +1,18 @@
 package com.example.cinemaservice.dto;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.cinemaservice.model.Cinema;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Data
 public class EmployeeResponse {
     private int id;
+    private int cinemaId;
     private String name;
     private String surname;
     private String position;
