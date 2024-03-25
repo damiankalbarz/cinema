@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
 public class Employee {
@@ -37,5 +39,13 @@ public class Employee {
     private int holidaysDays;
 
     private int availableVacationDays;
+
+    public double calculateBonus() {
+        if ("Manager".equalsIgnoreCase(position)) {
+            return salary *= 1.3; // Increase salary by 30% for managers
+        } else {
+            return salary *= 1.15; // Increase salary by 15% for regular employees
+        }
+    }
 
 }

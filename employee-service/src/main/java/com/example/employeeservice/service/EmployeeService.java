@@ -77,4 +77,13 @@ public class EmployeeService {
         return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
     }
 
+    public List<Employee> calculateBonusForAllEmployees() {
+        List<Employee> employees = getAllEmployees();
+        for (Employee employee : employees) {
+            employee.calculateBonus();
+            //saveEmployee(employee);
+        }
+        return employees;
+    }
+
 }

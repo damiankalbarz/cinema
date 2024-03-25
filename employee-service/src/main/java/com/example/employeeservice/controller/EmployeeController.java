@@ -55,4 +55,10 @@ public class EmployeeController {
             return new ResponseEntity<>("Nie udało się przyjąć urlopu.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/calculateBonus")
+    public ResponseEntity<List<Employee>> calculateBonusForAllEmployees() {
+        List<Employee>employees = employeeService.calculateBonusForAllEmployees();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
 }
