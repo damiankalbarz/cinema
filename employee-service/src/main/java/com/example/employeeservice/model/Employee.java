@@ -2,8 +2,10 @@ package com.example.employeeservice.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@AllArgsConstructor
 @Data
 @Entity
 public class Employee {
@@ -35,4 +37,5 @@ public class Employee {
     private int holidaysDays;
 
     private int availableVacationDays;
+
 }
