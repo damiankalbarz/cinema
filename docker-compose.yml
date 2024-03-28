@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  # Serwis bazy danych PostgreSQL
+  postgres:
+    image: postgres:latest
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: employee
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  # Serwis RabbitMQ
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq-broker
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: cinema
+
+
+
+  # Serwis aplikacji Spring Boot
+  employee-service:
+    build:
+      context: .
+      dockerfile: employee-service/Dockerfile
+    container_name: employee-service
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "8088:8088"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/employee
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      SPRING_RABBITMQ_VIRTUAL_HOST: /
+      RABBITMQ_EXCHANGE: employee-exchange
+      RABBITMQ_ROUTINGKEY: employee-routing-key
+      SPRING_APPLICATION_NAME: employee-service
+      EUREKA_CLIENT_REGISTER-WITH-EUREKA: true
+      EUREKA_CLIENT_FETCH-REGISTRY: true
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+
+  cinema-service:
+    build:
+      context: .
+      dockerfile: cinema-service/Dockerfile
+    container_name: cinema-service
+    depends_on:
+      - mysql
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/cinema
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_SHOW-SQL: true
+      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
+      SERVER_PORT: 8082
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      RABBITMQ_QUEUE: cinema-queue
+      SPRING_APPLICATION_NAME: cinema-service
+      EUREKA_CLIENT_REGISTER-WITH-EUREKA: true
+      EUREKA_CLIENT_FETCH-REGISTRY: true
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+
