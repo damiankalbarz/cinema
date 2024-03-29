@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # Serwis bazy danych PostgreSQL
   postgres:
     image: postgres:latest
     container_name: postgres-db
@@ -32,13 +31,11 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: cinema
 
-
-
   # Serwis aplikacji Spring Boot
   employee-service:
     build:
       context: .
-      dockerfile: employee-service/Dockerfile
+      dockerfile: ./employee-service/Dockerfile
     container_name: employee-service
     depends_on:
       - postgres
@@ -64,7 +61,7 @@ services:
   cinema-service:
     build:
       context: .
-      dockerfile: cinema-service/Dockerfile
+      dockerfile: ./cinema-service/Dockerfile
     container_name: cinema-service
     depends_on:
       - mysql
@@ -87,4 +84,22 @@ services:
       EUREKA_CLIENT_REGISTER-WITH-EUREKA: true
       EUREKA_CLIENT_FETCH-REGISTRY: true
       EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://eureka-server:8761/eureka/
-
+      
+  filmshow-service:
+    image: filmshow-service
+    container_name: filmshow-service
+    ports:
+      - "8085:8085"
+    environment:
+      SERVER_PORT: 8085
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/filmShow
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_LOB_NON_CONTEXTUAL_CREATION: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_APPLICATION_NAME: FILMSHOW-SERVICE
+      EUREKA_CLIENT_REGISTER-WITH-EUREKA: true
+      EUREKA_CLIENT_FETCH-REGISTRY: true
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://localhost:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: localhost
