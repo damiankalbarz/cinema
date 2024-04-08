@@ -4,6 +4,7 @@ import com.example.cinemaservice.model.Cinema;
 import com.example.cinemaservice.model.Room;
 import com.example.cinemaservice.service.CinemaService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "/cinema")
 public class CinemaController {
     @Autowired
