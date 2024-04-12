@@ -38,6 +38,9 @@ public class Employee {
     @Max(value = 30, message = "Liczba dni urlopu nie może przekroczyć 30")
     private int holidaysDays;
 
+    @Min(value = 0, message = "liczba dni na zwolnieniu lekarskim nie może być ujemna")
+    private int daysOnSickLeave;
+
     private int availableVacationDays;
 
     public double calculateBonus() {

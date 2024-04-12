@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -62,6 +63,26 @@ public class EmployeeService {
         return false;
     }
 
+    public Employee editEmployee(int id, Employee updatedEmployee) {
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (optionalEmployee.isPresent()) {
+            Employee existingEmployee = optionalEmployee.get();
+            existingEmployee.setCinemaId(updatedEmployee.getCinemaId());
+            existingEmployee.setName(updatedEmployee.getName());
+            existingEmployee.setSurname(updatedEmployee.getSurname());
+            existingEmployee.setPosition(updatedEmployee.getPosition());
+            existingEmployee.setPhone(updatedEmployee.getPhone());
+            existingEmployee.setSalary(updatedEmployee.getSalary());
+            existingEmployee.setHolidaysDays(updatedEmployee.getHolidaysDays());
+            existingEmployee.setDaysOnSickLeave(updatedEmployee.getDaysOnSickLeave());
+            existingEmployee.setAvailableVacationDays(updatedEmployee.getAvailableVacationDays());
+
+            return employeeRepository.save(existingEmployee);
+        } else {
+            throw new IllegalArgumentException("Nie można znaleźć pracownika o podanym identyfikatorze: " + id);
+        }
+    }
+
     private int calculateVacationDays(Date startDate, Date endDate) {
         LocalDate startLocalDate = convertToLocalDate(startDate);
         LocalDate endLocalDate = convertToLocalDate(endDate);
@@ -84,6 +105,22 @@ public class EmployeeService {
             //saveEmployee(employee);
         }
         return employees;
+    }
+
+
+
+    public String addSickLeave(int days, int id) {
+        if (days < 1) {
+            throw new IllegalArgumentException("Liczba dni na zwolnieniu lekarskim nie może być ujemna");
+        }
+        Employee employee = employeeRepository.findById(id).orElse(null);
+
+        System.out.println(employee.getId());
+        employee.setDaysOnSickLeave(employee.getDaysOnSickLeave()+days);
+
+        editEmployee(id,employee);
+
+        return "Zwolnienie lekarskie dodane pomyślnie";
     }
 
 }
