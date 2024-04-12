@@ -1,12 +1,16 @@
 package com.example.employeeservice.service;
 
+import com.example.employeeservice.dto.SickLeave;
 import com.example.employeeservice.model.Employee;
 import com.example.employeeservice.model.VacationRequest;
 import com.example.employeeservice.repository.EmployeeRepository;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -121,6 +125,29 @@ public class EmployeeService {
         editEmployee(id,employee);
 
         return "Zwolnienie lekarskie dodane pomyślnie";
+    }
+
+    @KafkaListener(
+            topics = "sickLeave",
+            groupId = "sickLeave"
+    )
+    void listener(String data){
+        try{
+            System.out.println("\nData received: " + data);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonParser parser = mapper.createParser(data);
+            SickLeave sickLeave =  parser.readValueAs(SickLeave.class);
+            System.out.println(sickLeave);
+            Optional<Employee> optionalEmployee = employeeRepository.findByPesel(sickLeave.getPesel());
+            if (optionalEmployee.isPresent()) {
+                Employee existingEmployee = optionalEmployee.get();
+                addSickLeave(sickLeave.getDaysOfSickLeave(),existingEmployee.getId());
+            }
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

@@ -62,7 +62,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    @PostMapping("/add/{id}")
+    @PostMapping("/addSickLeave/{id}")
     public ResponseEntity<String> addSickLeave(@PathVariable int id, @RequestBody int days) {
         String result = employeeService.addSickLeave(days,id);
         return ResponseEntity.ok(result);

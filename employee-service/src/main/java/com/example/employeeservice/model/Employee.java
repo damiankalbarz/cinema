@@ -24,6 +24,9 @@ public class Employee {
     @NotBlank(message = "Nazwisko jest wymagane")
     private String surname;
 
+    @Pattern(regexp = "\\d{11}", message = "Pesel musi składać się z 11 cyfr")
+    private String pesel;
+
     @NotBlank(message = "Stanowisko jest wymagane")
     private String position;
 

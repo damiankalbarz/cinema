@@ -43,21 +43,7 @@ public class CinemaService {
         return cinemaRepository.save(cinema);
     }
 
-/*
-    @Transactional
-    public Cinema addEmployeeToCinema(Employee employee, int id){
-        Cinema cinema = cinemaRepository.findById(id).orElse(null);
-        System.out.println(cinema);
-        if (cinema == null) {
-            throw new EntityNotFoundException("Cinema not found with ID: " + employee.getCinema().getId());
-        }
-        cinema.addEmployee(employee);
-        System.out.println(employee);
-        System.out.println(cinema);
-        return  cinemaRepository.save(cinema);
-    }
-*/
-    //@Transactional
+
     public void addEmployeeToCinema(Employee employee, int cinemaId) {
         Optional<Cinema> optionalCinema = cinemaRepository.findById(cinemaId);
         if (optionalCinema.isPresent()) {
