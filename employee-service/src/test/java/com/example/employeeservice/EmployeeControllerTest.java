@@ -35,8 +35,8 @@ class EmployeeControllerTest {
     void getAllEmployees_ReturnsListOfEmployees() {
         // Given
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(100, 1,"adam","Nowak","Manager","666888666",6000.0,30,30));
-        employees.add(new Employee(101, 1,"jakub","Nowak","Manager","666888666",6000.0,30,30));
+        employees.add(new Employee(100, 1,"adam","Nowak","12345678901","Manager","666888666",6000.0,30,30,0));
+        employees.add(new Employee(101, 1,"jakub","Nowak","12345678901","Manager","666888666",6000.0,30,30,0));
         when(employeeService.getAllEmployees()).thenReturn(employees);
 
         // When
@@ -51,7 +51,7 @@ class EmployeeControllerTest {
     void getEmployeeById_ExistingId_ReturnsEmployee() {
         // Given
         int employeeId = 100;
-        Employee employee = new Employee(employeeId, 1,"adam","Nowak","Manager","666888666",6000.0,30,30);
+        Employee employee = new Employee(employeeId, 1,"adam","Nowak","12345678901","Manager","666888666",6000.0,30,30,30);
         when(employeeService.getEmployeeById(employeeId)).thenReturn(employee);
 
         // When
@@ -78,7 +78,7 @@ class EmployeeControllerTest {
     @Test
     void addEmployee_ValidEmployee_ReturnsCreated() {
         // Given
-        Employee employee = new Employee(106, 1,"adam","Nowak","Manager","666888666",6000.0,30,30);
+        Employee employee = new Employee(106, 1,"adam","Nowak","12345678901","Manager","666888666",6000.0,30,30,0);
         when(employeeService.saveEmployee(employee)).thenReturn(employee);
 
         // When

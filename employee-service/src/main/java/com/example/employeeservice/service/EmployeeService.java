@@ -137,7 +137,7 @@ public class EmployeeService {
             ObjectMapper mapper = new ObjectMapper();
             JsonParser parser = mapper.createParser(data);
             SickLeave sickLeave =  parser.readValueAs(SickLeave.class);
-            System.out.println(sickLeave);
+            //System.out.println(sickLeave);
             Optional<Employee> optionalEmployee = employeeRepository.findByPesel(sickLeave.getPesel());
             if (optionalEmployee.isPresent()) {
                 Employee existingEmployee = optionalEmployee.get();
