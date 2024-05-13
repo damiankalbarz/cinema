@@ -1,4 +1,4 @@
-package com.example.buffetservice;
+package com.example.buffetservice.repository;
 
 import com.example.buffetservice.model.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;

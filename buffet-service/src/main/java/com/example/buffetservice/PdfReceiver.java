@@ -1,6 +1,7 @@
 package com.example.buffetservice;
 
 import com.example.buffetservice.model.Invoice;
+import com.example.buffetservice.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
