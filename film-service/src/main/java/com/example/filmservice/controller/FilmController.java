@@ -16,6 +16,7 @@ import java.util.*;
 
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/film")
 public class FilmController {
     @Autowired
@@ -52,7 +53,7 @@ public class FilmController {
         filmService.deleteFilm(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+    /*
     @GetMapping(value = "/{id}/image/stream", produces = MediaType.IMAGE_JPEG_VALUE)
     public void getFilmImageAsStream(@PathVariable String id, HttpServletResponse response) throws IOException {
         Optional<Film> optionalFilm = filmService.getFilmById(id);
@@ -63,7 +64,7 @@ public class FilmController {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         response.getOutputStream().write(optionalFilm.get().getImage());
     }
-
+    */
 
 
 }

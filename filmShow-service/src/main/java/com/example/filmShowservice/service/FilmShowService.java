@@ -7,10 +7,13 @@ import com.example.filmShowservice.dto.Room;
 import com.example.filmShowservice.model.FilmShow;
 import com.example.filmShowservice.repository.FilmShowRepositry;
 import jakarta.servlet.http.PushBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -19,6 +22,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class FilmShowService {
+    private static final Logger logger = LoggerFactory.getLogger(FilmShowService.class);
+
 
     @Autowired
     private FilmShowRepositry filmShowRepositry;
@@ -92,10 +97,41 @@ public class FilmShowService {
     }
 
     private FilmShowResponse mapToFilmShowResponse(FilmShow filmShow) {
-        Cinema cinema = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/" + filmShow.getCinemaId(), Cinema.class);
-        Film film = restTemplate.getForObject("http://FILM-SERVICE/film/" + filmShow.getFilmId(), Film.class);
-        Room room = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/room/"+filmShow.getRoomId(), Room.class);
 
+        Cinema cinema = null;
+        Film film = null;
+        Room room = null;
+
+
+        try {
+            cinema = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/" + filmShow.getCinemaId(), Cinema.class);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                logger.error("Cinema not found for ID: " + filmShow.getCinemaId());
+            } else {
+                throw e;
+            }
+        }
+
+        try {
+            film = restTemplate.getForObject("http://FILM-SERVICE/film/" + filmShow.getFilmId(), Film.class);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                logger.error("Film not found for ID: " + filmShow.getFilmId());
+            } else {
+                throw e;
+            }
+        }
+
+        try {
+            room = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/room/" + filmShow.getRoomId(), Room.class);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                logger.error("Room not found for ID: " + filmShow.getRoomId());
+            } else {
+                throw e;
+            }
+        }
         return new FilmShowResponse(
                 filmShow.getId(),
                 filmShow.getDateTime(),

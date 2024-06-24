@@ -24,5 +24,5 @@ public class Film {
     @NotBlank(message = "Kategoria nie może być pusta")
     private String category;
 
-    private byte[] image;
+    //private byte[] image;
 }

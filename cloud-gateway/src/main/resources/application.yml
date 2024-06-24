@@ -6,13 +6,24 @@ spring:
     name: API-GATEWAY
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
       routes:
         - id: CLIENT-SERVICE
           uri:  lb://CLIENT-SERVICE
           predicates:
             - Path=/client/**
-          filters:
-            - AuthenticationFilter
+
 
         - id: CINEMA-SERVICE
           uri: lb://CINEMA-SERVICE
@@ -24,15 +35,13 @@ spring:
           uri: lb://FILM-SERVICE
           predicates:
             - Path=/film/**
-          filters:
-            - AuthenticationFilter
+
 
         - id: FILMSHOW-SERVICE
           uri: lb://FILMSHOW-SERVICE
           predicates:
             - Path=/filmShow/**
-          filters:
-            - AuthenticationFilter
+
 
         - id: IDENTITY-SERVICE
           uri: lb://IDENTITY-SERVICE
@@ -43,6 +52,8 @@ spring:
           uri: lb://EMPLOYEE-SERVICE
           predicates:
             - Path=/employees/**
+          filters:
+            - AuthenticationFilter
 eureka:
   client:
     register-with-eureka: true
