@@ -16,7 +16,7 @@ import java.util.*;
 
 
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/film")
 public class FilmController {
     @Autowired
@@ -42,13 +42,13 @@ public class FilmController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/save")
     public ResponseEntity<Film> saveFilm(@Valid @RequestBody Film film) {
         Film savedFilm = filmService.saveFilm(film);
         return new ResponseEntity<>(savedFilm, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/auth/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFilm(@PathVariable String id) {
         filmService.deleteFilm(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
