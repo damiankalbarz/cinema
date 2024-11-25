@@ -1,44 +1,57 @@
 package com.example.cinemaservice.controller;
 
-import com.example.cinemaservice.model.Cinema;
-import com.example.cinemaservice.model.Room;
+import com.example.cinemaservice.dto.CinemaDto;
 import com.example.cinemaservice.service.CinemaService;
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@AllArgsConstructor
-@RequestMapping(value = "/cinema")
+@RequestMapping("/api/v1/cinemas")
 public class CinemaController {
+
     @Autowired
     private CinemaService cinemaService;
 
     @PostMapping
-    public Cinema addCinema(@Valid @RequestBody Cinema cinema){
-        return cinemaService.addCinema(cinema);
+    public ResponseEntity<CinemaDto> addCinema(@RequestBody CinemaDto cinemaDto) {
+        return cinemaService.addCinema(cinemaDto);
     }
 
     @GetMapping
-    public List<Cinema> fetchCinemas(){
-        return cinemaService.fetchCinema();
+    public ResponseEntity<List<CinemaDto>> fetchAllCinemas() {
+        return cinemaService.fetchAllCinemas();
     }
 
     @GetMapping("/{id}")
-    public Cinema fetchCinemaById(@PathVariable int id){
+    public ResponseEntity<CinemaDto> fetchCinemaById(@PathVariable int id) {
         return cinemaService.fetchCinemaById(id);
     }
 
-    @PostMapping("/room/{cinemaId}")
-    public Cinema addRoomToCinema(@PathVariable int cinemaId,@Valid @RequestBody Room room)
-    {
-        return cinemaService.addRoomToCinema(cinemaId,room);
+    @PutMapping("/{cinemaId}")
+    public ResponseEntity<Void> updateCinema(@PathVariable int cinemaId, @RequestBody CinemaDto cinemaDto) {
+        return cinemaService.updateCinema(cinemaId, cinemaDto);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<CinemaDto> patchCinema(@PathVariable int id, @RequestBody CinemaDto cinemaDto) {
+        return cinemaService.patchCinema(id, cinemaDto);
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteCinema(@PathVariable int id) {
+        return cinemaService.deleteCinemaById(id);
+    }
 
+    @PostMapping("/{cinemaId}/rooms/{roomId}")
+    public ResponseEntity<String> addRoomToCinema(@PathVariable int cinemaId, @PathVariable int roomId) {
+        return cinemaService.addRoomToCinema(cinemaId, roomId);
+    }
+
+    @PostMapping("/{cinemaId}/employees/{employeeId}")
+    public ResponseEntity<String> addEmployeeToCinema(@PathVariable int cinemaId, @PathVariable int employeeId) {
+        return cinemaService.addEmployeeToCinema(cinemaId, employeeId);
+    }
 }

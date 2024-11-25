@@ -28,6 +28,6 @@ public class Room {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "cinema_id")
+    @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;
 }

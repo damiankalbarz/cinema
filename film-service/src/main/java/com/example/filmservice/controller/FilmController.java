@@ -16,7 +16,6 @@ import java.util.*;
 
 
 @RestController
-//@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/film")
 public class FilmController {
     @Autowired

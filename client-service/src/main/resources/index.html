@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meeting Voice Notes</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <h1>Meeting Voice Notes</h1>
+    <button onclick="startRecording()">Start Recording</button>
+    <button onclick="stopRecording()">Stop Recording</button>
+    <div id="voiceNotes"></div>
+    <script>
+        var stompClient = null;
+        var mediaRecorder;
+        var audioChunks = [];
+        var meetingId = 1; // Replace with the actual meeting ID
+
+        function connect() {
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/voice', function (voiceNote) {
+                    showVoiceNote(JSON.parse(voiceNote.body));
+                });
+            });
+        }
+
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.start();
+
+                    mediaRecorder.addEventListener("dataavailable", event => {
+                        audioChunks.push(event.data);
+                    });
+
+                    mediaRecorder.addEventListener("stop", () => {
+                        const audioBlob = new Blob(audioChunks);
+                        audioChunks = [];
+                        const reader = new FileReader();
+                        reader.readAsDataURL(audioBlob);
+                        reader.onloadend = function () {
+                            var base64String = reader.result.split(',')[1];
+                            sendVoiceNote(base64String);
+                        };
+                    });
+                });
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+        }
+
+        function sendVoiceNote(audioData) {
+            stompClient.send("/app/voice", {}, JSON.stringify({ 'meetingId': meetingId, 'audioData': audioData }));
+        }
+
+        function showVoiceNote(voiceNote) {
+            var audio = new Audio("data:audio/wav;base64," + voiceNote.audioData);
+            var audioElement = document.createElement("div");
+            var playButton = document.createElement("button");
+            playButton.textContent = "Play Note";
+            playButton.onclick = function() {
+                audio.play();
+            };
+            audioElement.appendChild(playButton);
+            document.getElementById("voiceNotes").appendChild(audioElement);
+        }
+
+        function loadVoiceNotes() {
+            fetch('/voice-notes/' + meetingId)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(showVoiceNote);
+                });
+        }
+
+        connect();
+        loadVoiceNotes();
+    </script>
+</body>
+</html>

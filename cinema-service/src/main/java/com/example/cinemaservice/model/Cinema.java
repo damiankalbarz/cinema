@@ -1,7 +1,6 @@
 package com.example.cinemaservice.model;
 
 
-import com.example.cinemaservice.dto.EmployeeResponse;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.xml.stream.events.Comment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,15 +35,4 @@ public class Cinema {
     @OneToMany(mappedBy = "cinema", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Employee> employeeList = new ArrayList<>();
 
-
-    public void addEmployee(Employee employee) {
-        employeeList.add(employee);
-        employee.setCinema(this);
-    }
-
-
-    public void addRoom(Room room){
-        roomList.add(room);
-        room.setCinema(this);
-    }
 }

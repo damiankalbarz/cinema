@@ -1,9 +1,7 @@
 package com.example.cinemaservice.model;
 
-import com.example.cinemaservice.model.Cinema;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +18,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @JsonIgnore
-    @JoinColumn(name = "cinema_id")
+    @JoinColumn(name = "cinema_id", nullable = false)
     @ManyToOne
     private Cinema cinema;
     private String name;

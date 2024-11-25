@@ -1,16 +1,14 @@
 package com.example.cinemaservice.dto;
 
-import com.example.cinemaservice.model.Cinema;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
 @Data
-public class EmployeeResponse {
+@AllArgsConstructor
+@NoArgsConstructor
+public class EmployeeDto {
     private int id;
     private int cinemaId;
     private String name;
