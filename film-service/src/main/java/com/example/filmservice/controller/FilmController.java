@@ -1,5 +1,6 @@
 package com.example.filmservice.controller;
 
+import com.example.filmservice.dto.FilmDto;
 import com.example.filmservice.model.Film;
 import com.example.filmservice.service.FilmService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,42 +17,37 @@ import java.util.*;
 
 
 @RestController
-@RequestMapping("/film")
+@RequestMapping("/api/v1/film")
 public class FilmController {
+
     @Autowired
     private FilmService filmService;
 
     @GetMapping
-    public ResponseEntity<List<Film>> getAllFilms() {
-        List<Film> films = filmService.getAllFilms();
-        return new ResponseEntity<>(films, HttpStatus.OK);
-    }
-
-
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Film>> getFilmsByCategory(@PathVariable String category) {
-        List<Film> films = filmService.getByCategory(category);
-        return new ResponseEntity<>(films, HttpStatus.OK);
+    public ResponseEntity<List<FilmDto>> getAllFilms() {
+        return filmService.getAllFilms();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Film> getFilmById(@PathVariable String id) {
-        Optional<Film> film = filmService.getFilmById(id);
-        return film.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<FilmDto> getFilmById(@PathVariable String id) {
+        return filmService.getFilmById(id);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<Film> saveFilm(@Valid @RequestBody Film film) {
-        Film savedFilm = filmService.saveFilm(film);
-        return new ResponseEntity<>(savedFilm, HttpStatus.CREATED);
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<FilmDto>> getFilmsByCategory(@PathVariable String category) {
+        return filmService.getFilmsByCategory(category);
+    }
+
+    @PostMapping
+    public ResponseEntity<FilmDto> createFilm(@Valid @RequestBody FilmDto filmDto) {
+        return filmService.saveFilm(filmDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFilm(@PathVariable String id) {
-        filmService.deleteFilm(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return filmService.deleteFilm(id);
     }
+
     /*
     @GetMapping(value = "/{id}/image/stream", produces = MediaType.IMAGE_JPEG_VALUE)
     public void getFilmImageAsStream(@PathVariable String id, HttpServletResponse response) throws IOException {

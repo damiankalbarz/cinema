@@ -1,4 +1,4 @@
-package com.example.filmservice.repositry;
+package com.example.filmservice.repository;
 
 import com.example.filmservice.model.Film;
 import org.springframework.data.mongodb.repository.MongoRepository;
