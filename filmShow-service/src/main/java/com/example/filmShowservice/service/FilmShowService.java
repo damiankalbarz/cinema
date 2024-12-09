@@ -33,7 +33,7 @@ public class FilmShowService {
 
     public ResponseEntity<?> create(FilmShow filmShow){
         try{
-            Room room = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/room/"+filmShow.getRoomId(), Room.class);
+            Room room = restTemplate.getForObject("http://CINEMA-SERVICE/api/v1/cinema/room/"+filmShow.getRoomId(), Room.class);
             if (room != null) {
                 filmShow.setAvailableSeats(room.getSeats());
             }
@@ -50,9 +50,9 @@ public class FilmShowService {
     public ResponseEntity<?> fetchFilmShowById(int id){
         Optional<FilmShow> filmShow = filmShowRepositry.findById(id);
         if(filmShow.isPresent()){
-            Cinema cinema = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/" + filmShow.get().getCinemaId(), Cinema.class);
-            Film film = restTemplate.getForObject("http://FILM-SERVICE/film/"+filmShow.get().getFilmId(), Film.class);
-            Room room = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/room/"+filmShow.get().getRoomId(), Room.class);
+            Cinema cinema = restTemplate.getForObject("http://CINEMA-SERVICE/api/v1/cinema/" + filmShow.get().getCinemaId(), Cinema.class);
+            Film film = restTemplate.getForObject("http://FILM-SERVICE/api/v1/film/"+filmShow.get().getFilmId(), Film.class);
+            Room room = restTemplate.getForObject("http://CINEMA-SERVICE/api/v1/cinema/room/"+filmShow.get().getRoomId(), Room.class);
             FilmShowResponse filmShowResponse = new FilmShowResponse(
                     filmShow.get().getId(),
                     filmShow.get().getDateTime(),
@@ -104,7 +104,7 @@ public class FilmShowService {
 
 
         try {
-            cinema = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/" + filmShow.getCinemaId(), Cinema.class);
+            cinema = restTemplate.getForObject("http://CINEMA-SERVICE/api/v1//cinema/" + filmShow.getCinemaId(), Cinema.class);
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 logger.error("Cinema not found for ID: " + filmShow.getCinemaId());
@@ -114,7 +114,7 @@ public class FilmShowService {
         }
 
         try {
-            film = restTemplate.getForObject("http://FILM-SERVICE/film/" + filmShow.getFilmId(), Film.class);
+            film = restTemplate.getForObject("http://FILM-SERVICE/api/v1/film/" + filmShow.getFilmId(), Film.class);
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 logger.error("Film not found for ID: " + filmShow.getFilmId());
@@ -124,7 +124,7 @@ public class FilmShowService {
         }
 
         try {
-            room = restTemplate.getForObject("http://CINEMA-SERVICE/cinema/room/" + filmShow.getRoomId(), Room.class);
+            room = restTemplate.getForObject("http://CINEMA-SERVICE/api/v1/cinema/room/" + filmShow.getRoomId(), Room.class);
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 logger.error("Room not found for ID: " + filmShow.getRoomId());
